@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSVFileMakerBlockChain.Properties;
+using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +17,25 @@ namespace CSVFileMakerBlockChain
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var html = StaticData.url_init;
+
+            HtmlWeb web = new HtmlWeb();
+
+            var htmlDoc = web.Load(html);
+
+            var nodes = htmlDoc.DocumentNode;
+
+            var node = nodes.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
+
+            foreach(var n in node)
+            {
+                Console.WriteLine(n.OuterHtml);
+            }
+
         }
     }
 }
