@@ -56,6 +56,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Parser\Interfaces\IBlock.cs" />
+    <Compile Include="Parser\Interfaces\IBlockHeight.cs" />
+    <Compile Include="Parser\Interfaces\IParserFactory.cs" />
     <Compile Include="Parser\Interfaces\ITransaction.cs" />
     <Compile Include="Parser\Model\Block.cs" />
     <Compile Include="Parser\Model\Transaction.cs" />

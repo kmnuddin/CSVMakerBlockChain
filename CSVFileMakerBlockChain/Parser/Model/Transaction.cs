@@ -25,14 +25,14 @@ namespace CSVFileMakerBlockChain.Parser.Model
             Fee = fee ?? throw new ArgumentNullException(nameof(fee));
         }
 
-        public IBlock Block { get ; set ; }
-        public IEnumerable<string> Senders { get ; set ; }
-        public IEnumerable<string> Sending_Amounts { get ; set ; }
-        public IEnumerable<string> Receivers { get ; set ; }
-        public IEnumerable<string> Received_Amounts { get ; set ; }
-        public string Change { get ; set ; }
-        public string Size { get ; set ; }
-        public string Fee { get ; set ; }
-        string ITransaction.Transaction { get ; set ; }
+        public IBlock Block { get; set; }
+        public IEnumerable<string> Senders { get; set; }
+        public IEnumerable<string> Sending_Amounts { get; set; }
+        public IEnumerable<string> Receivers { get; set; }
+        public IEnumerable<string> Received_Amounts { get; set; }
+        public string Change { get; set; }
+        public string Size { get; set; }
+        public string Fee { get; set; }
+        string ITransaction.Transaction { get; set; }
     }
 }
