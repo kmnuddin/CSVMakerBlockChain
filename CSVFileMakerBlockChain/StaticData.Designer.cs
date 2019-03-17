@@ -61,20 +61,20 @@ namespace CSVFileMakerBlockChain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://www.blockchain.com/btc/block/00000000000000000024c9034d3ef364e2f058820fd852835a9574ebb6e10233?fbclid=IwAR0qKSL1V5V4BILOekaEL6ZtMEPLE6lCMyO-nfbUifRBbfFJYpBdC4v1acY.
+        ///   Looks up a localized string similar to https://www.blockchain.com/btc/block/.
         /// </summary>
-        internal static string url_init {
+        internal static string url_block {
             get {
-                return ResourceManager.GetString("url_init", resourceCulture);
+                return ResourceManager.GetString("url_block", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://www.blockchain.com/btc/block/0000000000000000371592d43088a28c5f9e6de2d22e15d0e8cf43b2ad82cb64?fbclid=IwAR0mGFQs0Gy6QYf9bA1iMSREqINx9j2eWNHBJLL58o38z8DTAZ9Mfe3UwZc.
+        ///   Looks up a localized string similar to https://www.blockchain.com/btc/block-height/.
         /// </summary>
-        internal static string url_test {
+        internal static string url_block_height {
             get {
-                return ResourceManager.GetString("url_test", resourceCulture);
+                return ResourceManager.GetString("url_block_height", resourceCulture);
             }
         }
     }

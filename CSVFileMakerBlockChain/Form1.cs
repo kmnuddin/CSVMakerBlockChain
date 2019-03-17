@@ -21,7 +21,7 @@ namespace CSVFileMakerBlockChain
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var html = StaticData.url_init;
+            var html = StaticData.url_block_height;
 
             HtmlWeb web = new HtmlWeb();
 
@@ -30,12 +30,6 @@ namespace CSVFileMakerBlockChain
             var nodes = htmlDoc.DocumentNode;
 
             var node = nodes.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
-
-            foreach(var n in node)
-            {
-                Console.WriteLine(n.OuterHtml);
-            }
-
         }
     }
 }
