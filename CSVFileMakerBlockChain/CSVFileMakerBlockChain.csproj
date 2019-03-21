@@ -60,6 +60,7 @@
     <Compile Include="Parser\Interfaces\IParserFactory.cs" />
     <Compile Include="Parser\Interfaces\ITransaction.cs" />
     <Compile Include="Parser\Model\Block.cs" />
+    <Compile Include="Parser\Model\BlockHeight.cs" />
     <Compile Include="Parser\Model\Transaction.cs" />
     <Compile Include="Parser\ParserFactory.cs" />
     <Compile Include="Program.cs" />

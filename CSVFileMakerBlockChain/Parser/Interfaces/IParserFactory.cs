@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSVFileMakerBlockChain.Parser.Interfaces
 {
-    interface IParserFactory
+    public interface IParserFactory
     {
+        IEnumerable<IBlockHeight> GetAllBlockHeightsFromRange(int from, int to);
 
     }
 }
