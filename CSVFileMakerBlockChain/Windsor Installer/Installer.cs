@@ -19,7 +19,7 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container
-                .Register(Component.For<IBlockHeight>().ImplementedBy<BlockHeight>().LifestyleTransient())
+                //.Register(Component.For<IBlockHeight>().ImplementedBy<BlockHeight>().LifestyleTransient())
                 .Register(Component.For<IBlock>().ImplementedBy<Block>().LifestyleTransient())
                 .Register(Component.For<ITransaction>().ImplementedBy<Transaction>().LifestyleTransient())
                 .Register(Component.For<IParserFactory>().ImplementedBy<ParserFactory>().LifestyleTransient())

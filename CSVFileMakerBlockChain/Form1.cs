@@ -1,4 +1,5 @@
 ﻿
+using CSVFileMakerBlockChain.Interfaces;
 using CSVFileMakerBlockChain.Properties;
 using HtmlAgilityPack;
 using System;
@@ -18,6 +19,10 @@ namespace CSVFileMakerBlockChain
         public Form1()
         {
             InitializeComponent();
+
+            var test = IoC.GlobalContainer.Resolve<IWebRepository>();
+
+            Console.WriteLine(test.ParseBlockHeights(1,1));
         }
 
         

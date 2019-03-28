@@ -32,7 +32,10 @@ namespace CSVFileMakerBlockChain.Repository
             for(int height = from; height <= to; height++)
             {
                 var url = url_builder.Append(height).ToString();
-                nodes_block_heights = web.Load(url).DocumentNode.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
+                nodes_block_heights = web.Load(url).DocumentNode.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("table table-striped"));
+
+                
+                
             }
 
             return _parserFactory.GetBlockHeights();
