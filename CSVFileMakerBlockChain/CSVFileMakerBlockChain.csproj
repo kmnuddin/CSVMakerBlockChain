@@ -33,11 +33,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.5.0.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.9.2.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.9.2\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,13 +64,19 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parser\Interfaces\IBlock.cs" />
-    <Compile Include="Parser\Interfaces\IBlockHeight.cs" />
-    <Compile Include="Parser\Interfaces\IParserFactory.cs" />
-    <Compile Include="Parser\Interfaces\ITransaction.cs" />
-    <Compile Include="Parser\Model\Block.cs" />
-    <Compile Include="Parser\Model\BlockHeight.cs" />
-    <Compile Include="Parser\Model\Transaction.cs" />
+    <Compile Include="Interfaces\IWebRepository.cs" />
+    <Compile Include="IoC.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="WebRepository\WebRepository.cs" />
+    <Compile Include="Windsor Installer\Installer.cs" />
+    <Compile Include="Interfaces\IBlock.cs" />
+    <Compile Include="Interfaces\IBlockHeight.cs" />
+    <Compile Include="Interfaces\IParserFactory.cs" />
+    <Compile Include="Interfaces\ITransaction.cs" />
+    <Compile Include="Interfaces\IViewModel.cs" />
+    <Compile Include="Model\Block.cs" />
+    <Compile Include="Model\BlockHeight.cs" />
+    <Compile Include="Model\Transaction.cs" />
     <Compile Include="Parser\ParserFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

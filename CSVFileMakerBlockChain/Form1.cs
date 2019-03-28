@@ -1,4 +1,5 @@
-﻿using CSVFileMakerBlockChain.Properties;
+﻿
+using CSVFileMakerBlockChain.Properties;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -19,17 +20,6 @@ namespace CSVFileMakerBlockChain
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var html = StaticData.url_block_height;
-
-            HtmlWeb web = new HtmlWeb();
-
-            var htmlDoc = web.Load(html);
-
-            var nodes = htmlDoc.DocumentNode;
-
-            var node = nodes.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
-        }
+        
     }
 }

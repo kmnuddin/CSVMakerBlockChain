@@ -1,4 +1,4 @@
-﻿using CSVFileMakerBlockChain.Parser.Interfaces;
+﻿using CSVFileMakerBlockChain.Interfaces;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -6,37 +6,76 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVFileMakerBlockChain.Parser
+namespace CSVFileMakerBlockChain.Model
 {
     public class ParserFactory : IParserFactory
     {
-        private IEnumerable<IBlockHeight> block_heights;
-
-        public ParserFactory()
+        private readonly IEnumerable<IBlockHeight> _blockheights;
+        private readonly IEnumerable<IBlock> _blocks;
+        
+        public ParserFactory(IEnumerable<IBlockHeight> blockheights, IEnumerable<IBlock> blocks)
         {
-            
+            _blockheights = blockheights;
+            _blocks = blocks;
+            //var html = StaticData.url_block_height;
+
+            //HtmlWeb web = new HtmlWeb();
+
+            //var htmlDoc = web.Load(html);
+
+            //var nodes = htmlDoc.DocumentNode;
+
+            //var node = nodes.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
         }
 
-        public IEnumerable<IBlockHeight> GetAllBlockHeightsFromRange(int from, int to)
+        public IBlockHeight GetBlockHeight(string height)
         {
-            var web = new HtmlWeb();
-            for (int height = from; height <= to; height++)
-            {
-                StringBuilder url = initialize_Url(StaticData.url_block_height);
-                
-                var html_doc = web.Load(construct_url_using_height(url, height)).DocumentNode;
-
-                var html_table = html_doc.Descendants("table").Where(a => a.GetAttributeValue("class", "").Contains("table table-striped"));
-
-
-
-            }
-            return block_heights;
+            return _blockheights.SingleOrDefault(a => a.Height == height);
         }
 
-        private StringBuilder initialize_Url(string url) => new StringBuilder(url);
-        private string construct_url_using_height(StringBuilder url, int height) => url.Append(height.ToString()).ToString();
+        public IBlock GetBlock(IBlockHeight blockheight)
+        {
+            return _blocks.SingleOrDefault(a => a.Height.Height == blockheight.Height);
+        }
 
-       
+        public ITransaction GetTransaction(IBlock block, string transaction_id)
+        {
+            return block.Transactions.SingleOrDefault(a => a.TransactionID == transaction_id);
+        }
+
+        public IEnumerable<IBlockHeight> GetBlockHeights()
+        {
+            return _blockheights;
+        }
+
+        public IEnumerable<IBlock> GetBlocks()
+        {
+            return _blocks;
+        }
+
+        public IEnumerable<ITransaction> GetTransactions(IBlock block)
+        {
+            return block.Transactions;
+        }
+
+        public void AddBlockHeight(IBlockHeight blockheight)
+        {
+            _blockheights.ToList().Add(blockheight);
+        }
+
+        public void AddBlocks(IBlock block)
+        {
+            _blocks.ToList().Add(block);
+        }
+
+        public void AddTransaction(IBlock block, ITransaction transaction)
+        {
+            block.Transactions.ToList().Add(transaction);
+        }
+
+        public void AddTransactions(IBlock block, IEnumerable<ITransaction> transactions)
+        {
+            block.Transactions = transactions;
+        }
     }
 }

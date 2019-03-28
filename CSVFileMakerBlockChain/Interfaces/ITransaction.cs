@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVFileMakerBlockChain.Parser.Interfaces
+namespace CSVFileMakerBlockChain.Interfaces
 {
     public interface ITransaction
     {
         IBlock Block { get; set; }
-        string Transaction { get; set; }
+        string TransactionID { get; set; }
         IEnumerable<string> Senders { get; set; }
         IEnumerable<string> Sending_Amounts { get; set; }
         IEnumerable<string> Receivers { get; set; }

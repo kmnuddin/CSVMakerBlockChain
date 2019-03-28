@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVFileMakerBlockChain.Parser.Interfaces
+namespace CSVFileMakerBlockChain.Interfaces
 {
     public interface IBlock
     {
@@ -24,5 +24,6 @@ namespace CSVFileMakerBlockChain.Parser.Interfaces
         string Version { get; set; }
         string Nonce { get; set; }
         string Block_Reward { get; set; }
+        IEnumerable<ITransaction> Transactions { get; set; }
     }
 }

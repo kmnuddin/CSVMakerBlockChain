@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVFileMakerBlockChain.Parser.Interfaces
+namespace CSVFileMakerBlockChain.Interfaces
 {
     public interface IBlockHeight
     {
-        string BlockHeight { get; set; }
+        string Height { get; set; }
         string Hash { get; set; }
     }
 }

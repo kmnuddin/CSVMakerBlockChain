@@ -1,15 +1,15 @@
-﻿using CSVFileMakerBlockChain.Parser.Interfaces;
+﻿using CSVFileMakerBlockChain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVFileMakerBlockChain.Parser.Model
+namespace CSVFileMakerBlockChain.Model
 {
     public class BlockHeight : IBlockHeight
     {
         public string Hash { get; set; }
-        string IBlockHeight.BlockHeight { get; set; }
+        public string Height { get; set; }
     }
 }
