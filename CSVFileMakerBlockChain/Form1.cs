@@ -22,7 +22,7 @@ namespace CSVFileMakerBlockChain
 
             var test = IoC.GlobalContainer.Resolve<IWebRepository>();
 
-            Console.WriteLine(test.ParseBlockHeights(1,1));
+            Console.WriteLine(test.ParseBlockHeights(565578, 565578).Count());
         }
 
         

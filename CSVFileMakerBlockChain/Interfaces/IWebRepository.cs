@@ -13,9 +13,9 @@ namespace CSVFileMakerBlockChain.Interfaces
         IEnumerable<IBlock> ParseBlocks(IEnumerable<IBlockHeight> blockheights);
         IEnumerable<ITransaction> ParseTransactions(IBlock block);
 
-        IEnumerable<HtmlNode> nodes_block_heights { get; set; }
-        IEnumerable<HtmlNode> nodes_block_transactions { get; set; }
-        IEnumerable<HtmlNode> node_blocks { get; set; }
+        HtmlNode nodes_block_heights { get; set; }
+        HtmlNode nodes_block_transactions { get; set; }
+        HtmlNode node_blocks { get; set; }
 
     }
 }

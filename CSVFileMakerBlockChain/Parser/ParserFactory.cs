@@ -10,22 +10,13 @@ namespace CSVFileMakerBlockChain.Model
 {
     public class ParserFactory : IParserFactory
     {
-        private readonly IEnumerable<IBlockHeight> _blockheights;
-        private readonly IEnumerable<IBlock> _blocks;
+        private readonly IList<IBlockHeight> _blockheights;
+        private readonly IList<IBlock> _blocks;
         
         public ParserFactory(IEnumerable<IBlockHeight> blockheights, IEnumerable<IBlock> blocks)
         {
-            _blockheights = blockheights;
-            _blocks = blocks;
-            //var html = StaticData.url_block_height;
-
-            //HtmlWeb web = new HtmlWeb();
-
-            //var htmlDoc = web.Load(html);
-
-            //var nodes = htmlDoc.DocumentNode;
-
-            //var node = nodes.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("row"));
+            _blockheights = blockheights.ToList();
+            _blocks = blocks.ToList();
         }
 
         public IBlockHeight GetBlockHeight(string height)
@@ -60,12 +51,12 @@ namespace CSVFileMakerBlockChain.Model
 
         public void AddBlockHeight(IBlockHeight blockheight)
         {
-            _blockheights.ToList().Add(blockheight);
+            _blockheights.Add(blockheight);
         }
 
         public void AddBlocks(IBlock block)
         {
-            _blocks.ToList().Add(block);
+            _blocks.Add(block);
         }
 
         public void AddTransaction(IBlock block, ITransaction transaction)

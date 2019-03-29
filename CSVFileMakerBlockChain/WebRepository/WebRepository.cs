@@ -13,17 +13,14 @@ namespace CSVFileMakerBlockChain.Repository
         private IParserFactory _parserFactory;
 
         public HtmlWeb web { get; set; }
-        public IEnumerable<HtmlNode> nodes_block_heights { get; set; }
-        public IEnumerable<HtmlNode> nodes_block_transactions { get; set; }
-        public IEnumerable<HtmlNode> node_blocks { get; set; }
-
+        public HtmlNode nodes_block_heights { get; set; }
+        public HtmlNode nodes_block_transactions { get; set; }
+        public HtmlNode node_blocks { get; set; }
 
         public WebRepository(IParserFactory parserFactory)
         {
             _parserFactory = parserFactory;
         }
-
-       
 
         public IEnumerable<IBlockHeight> ParseBlockHeights(int from, int to)
         {
@@ -32,10 +29,33 @@ namespace CSVFileMakerBlockChain.Repository
             for(int height = from; height <= to; height++)
             {
                 var url = url_builder.Append(height).ToString();
-                nodes_block_heights = web.Load(url).DocumentNode.Descendants("div").Where(a => a.GetAttributeValue("class", "").Contains("table table-striped"));
+                var tables = web.Load(url).DocumentNode.SelectNodes("//table");
 
-                
-                
+                foreach(var table in tables)
+                {
+                    var block_height = IoC.GlobalContainer.Resolve<IBlockHeight>();
+
+                    foreach (var rows in table.SelectNodes("tr"))
+                    {
+                        var cells = rows.SelectNodes("th|td");
+                        foreach (var cell in cells)
+                        {
+                            if(cell.InnerText == "Height")
+                            {
+                                block_height.Height = cells[1].InnerText;
+                                break;
+                            }
+
+                            if(cell.InnerText == "Hash")
+                            {
+                                block_height.Hash = cells[1].InnerText.TrimEnd();
+                                break;
+                            }
+                        }
+                    }
+                    _parserFactory.AddBlockHeight(block_height);
+
+                } 
             }
 
             return _parserFactory.GetBlockHeights();
