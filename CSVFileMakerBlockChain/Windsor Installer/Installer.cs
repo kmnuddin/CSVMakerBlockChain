@@ -5,6 +5,7 @@ using Castle.Windsor;
 using CSVFileMakerBlockChain.Interfaces;
 using CSVFileMakerBlockChain.Model;
 using CSVFileMakerBlockChain.Repository;
+using CSVFileMakerBlockChain.View_Model;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
                 .Register(Component.For<ITransaction>().ImplementedBy<Transaction>().LifestyleTransient())
                 .Register(Component.For<IParserFactory>().ImplementedBy<ParserFactory>().LifestyleTransient())
                 .Register(Component.For<IWebRepository>().ImplementedBy<WebRepository>().LifestyleSingleton())
+                .Register(Component.For<IViewModel>().ImplementedBy<ViewModel>().LifestyleSingleton())
                 //.Register(Component.For<IEnumerable<IBlock>>().ImplementedBy<List<Block>>().LifestyleTransient())
                 //.Register(Component.For<IEnumerable<IBlockHeight>>().ImplementedBy<List<BlockHeight>>().LifestyleTransient())
                 //.Register(Component.For<IEnumerable<ITransaction>>().ImplementedBy<List<Transaction>>().LifestyleTransient())

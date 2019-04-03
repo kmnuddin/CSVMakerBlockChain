@@ -16,13 +16,13 @@ namespace CSVFileMakerBlockChain
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        private IViewModel _viewModel;
+
+        public Form1(IViewModel viewModel)
         {
             InitializeComponent();
 
-            var test = IoC.GlobalContainer.Resolve<IWebRepository>();
-
-            Console.WriteLine(test.ParseBlockHeights(565578, 565578).Count());
+            _viewModel = viewModel;
         }
 
         

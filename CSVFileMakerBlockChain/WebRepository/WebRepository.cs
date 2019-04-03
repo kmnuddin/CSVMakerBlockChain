@@ -42,7 +42,7 @@ namespace CSVFileMakerBlockChain.Repository
                         {
                             if(cell.InnerText == "Height")
                             {
-                                block_height.Height = cells[1].InnerText;
+                                block_height.Height = cells[1].InnerText.TrimEnd();
                                 break;
                             }
 

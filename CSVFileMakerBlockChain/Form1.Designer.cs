@@ -31,7 +31,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Gnrt_Blocks_Transactions = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.Block_List_View = new System.Windows.Forms.ListView();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -62,16 +62,16 @@
             this.Gnrt_Blocks_Transactions.Text = "Generate Blocks and Transactions";
             this.Gnrt_Blocks_Transactions.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // Block_List_View
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Block_List_View.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.listView1.Location = new System.Drawing.Point(297, 31);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(121, 457);
-            this.listView1.TabIndex = 8;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.Block_List_View.Location = new System.Drawing.Point(297, 31);
+            this.Block_List_View.MultiSelect = false;
+            this.Block_List_View.Name = "Block_List_View";
+            this.Block_List_View.Size = new System.Drawing.Size(121, 457);
+            this.Block_List_View.TabIndex = 8;
+            this.Block_List_View.UseCompatibleStateImageBehavior = false;
             // 
             // label2
             // 
@@ -100,7 +100,7 @@
             this.ClientSize = new System.Drawing.Size(1111, 648);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.Block_List_View);
             this.Controls.Add(this.Gnrt_Blocks_Transactions);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
@@ -116,7 +116,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Gnrt_Blocks_Transactions;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView Block_List_View;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView;
     }

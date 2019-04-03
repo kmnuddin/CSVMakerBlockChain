@@ -1,13 +1,13 @@
 ﻿using CSVFileMakerBlockChain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace CSVFileMakerBlockChain.ViewModel
+namespace CSVFileMakerBlockChain.View_Model
 {
     public class ViewModel : IViewModel
     {
+        public void Populate_Block_List(ListView listView)
+        {
+            
+        }
     }
 }
