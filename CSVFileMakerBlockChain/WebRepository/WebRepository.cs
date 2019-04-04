@@ -12,10 +12,8 @@ namespace CSVFileMakerBlockChain.Repository
     {
         private IParserFactory _parserFactory;
 
-        public HtmlWeb web { get; set; }
-        public IList<IBlockHeight> nodes_block_heights { get; set; }
-        public IList<ITransaction> nodes_block_transactions { get; set; }
-        public IList<IBlock> node_blocks { get; set; }
+        private HtmlWeb web { get; set; }
+        private HtmlNode node { get; set; }
 
         public WebRepository(IParserFactory parserFactory)
         {
@@ -41,29 +39,19 @@ namespace CSVFileMakerBlockChain.Repository
                     }
                 }
                 _parserFactory.AddBlockHeight(block_height);
-
-                nodes_block_heights = _parserFactory.GetBlockHeights().ToList();
-               
             }
 
             return _parserFactory.GetBlockHeights();
         }
 
-        public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
-        {
-            return await Task.Run(() => ParseBlockHeight(height));
-        }
-
-        public async Task<IEnumerable<IBlock>> ParseBlocksAsynce(IBlockHeight blockHeight)
-        {
-            return await Task.Run(() => ParseBlocks(blockHeight));
-        }
-
         public IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight)
         {
             string url = build_Url(blockheight.Hash);
-            var div_block = web.Load(url).DocumentNode.Descendants("div").Where
+
+            node = web.Load(url).DocumentNode;
+            var div_block = node.Descendants("div").Where
                 (a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("col-md-6 col-sm-6")).ToList();
+
 
             var table = div_block[0].SelectNodes("//table");
 
@@ -87,8 +75,18 @@ namespace CSVFileMakerBlockChain.Repository
         
         public IEnumerable<ITransaction> ParseTransactions(IBlock block, HtmlNode transaction_node)
         {
-
+            
             return _parserFactory.GetTransactions(block);
+        }
+
+        public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
+        {
+            return await Task.Run(() => ParseBlockHeight(height));
+        }
+
+        public async Task<IEnumerable<IBlock>> ParseBlocksAsync(IBlockHeight blockHeight)
+        {
+            return await Task.Run(() => ParseBlocks(blockHeight));
         }
 
 
@@ -121,6 +119,9 @@ namespace CSVFileMakerBlockChain.Repository
                     break;
                 case "Transaction Fees":
                     block.Transaction_Fees = getCellValue(cells);
+                    break;
+                case "Timestamp":
+                    block.Timestamp = getCellValue(cells);
                     break;
                 case "Received Time":
                     block.Received_Time = getCellValue(cells);

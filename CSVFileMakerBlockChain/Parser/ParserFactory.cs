@@ -48,7 +48,7 @@ namespace CSVFileMakerBlockChain.Model
         {
             for(int i = 0; i < _blocks.Count; i++)
             {
-                if (_blocks[i] == null)
+                if (String.IsNullOrWhiteSpace(_blocks[i].Height.Height))
                     _blocks.RemoveAt(i);
             }
             return _blocks;
@@ -58,7 +58,7 @@ namespace CSVFileMakerBlockChain.Model
         {
             for (int i = 0; i < block.Transactions.Count(); i++)
             {
-                if (block.Transactions.ElementAt(i) == null)
+                if (String.IsNullOrWhiteSpace(block.Transactions.ElementAt(i).TransactionID))
                     block.Transactions.ToList().RemoveAt(i);
             }
             return block.Transactions;
