@@ -22,5 +22,6 @@ namespace CSVFileMakerBlockChain.Interfaces
         void AddTransaction(IBlock block, ITransaction transaction);
         void AddTransactions(IBlock block, IEnumerable<ITransaction> transactions);
 
+
     }
 }

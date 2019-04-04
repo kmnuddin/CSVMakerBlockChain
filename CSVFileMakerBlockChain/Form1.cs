@@ -25,6 +25,17 @@ namespace CSVFileMakerBlockChain
             _viewModel = viewModel;
         }
 
-        
+        private void Gnrt_Blocks_Transactions_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _viewModel.Populate_Block_ListAsync(Block_List, 565578, 565598);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

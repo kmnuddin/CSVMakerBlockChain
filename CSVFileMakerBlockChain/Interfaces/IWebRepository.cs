@@ -9,9 +9,11 @@ namespace CSVFileMakerBlockChain.Interfaces
 {
     public interface IWebRepository
     {
-        IEnumerable<IBlockHeight> ParseBlockHeights(int from, int to);
-        IEnumerable<IBlock> ParseBlocks(IEnumerable<IBlockHeight> blockheights);
+        IEnumerable<IBlockHeight> ParseBlockHeight(int height);
+        IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight);
         IEnumerable<ITransaction> ParseTransactions(IBlock block);
+        Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height);
+
 
         HtmlNode nodes_block_heights { get; set; }
         HtmlNode nodes_block_transactions { get; set; }

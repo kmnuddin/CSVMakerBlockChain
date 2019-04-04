@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Blk_Range_Txtbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Gnrt_Blocks_Transactions = new System.Windows.Forms.Button();
-            this.Block_List_View = new System.Windows.Forms.ListView();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Block_List = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // Blk_Range_Txtbox
             // 
-            this.textBox1.Location = new System.Drawing.Point(126, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(147, 20);
-            this.textBox1.TabIndex = 4;
+            this.Blk_Range_Txtbox.Location = new System.Drawing.Point(126, 31);
+            this.Blk_Range_Txtbox.Name = "Blk_Range_Txtbox";
+            this.Blk_Range_Txtbox.Size = new System.Drawing.Size(147, 20);
+            this.Blk_Range_Txtbox.TabIndex = 4;
             // 
             // label1
             // 
@@ -61,17 +61,7 @@
             this.Gnrt_Blocks_Transactions.TabIndex = 7;
             this.Gnrt_Blocks_Transactions.Text = "Generate Blocks and Transactions";
             this.Gnrt_Blocks_Transactions.UseVisualStyleBackColor = true;
-            // 
-            // Block_List_View
-            // 
-            this.Block_List_View.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.Block_List_View.Location = new System.Drawing.Point(297, 31);
-            this.Block_List_View.MultiSelect = false;
-            this.Block_List_View.Name = "Block_List_View";
-            this.Block_List_View.Size = new System.Drawing.Size(121, 457);
-            this.Block_List_View.TabIndex = 8;
-            this.Block_List_View.UseCompatibleStateImageBehavior = false;
+            this.Gnrt_Blocks_Transactions.Click += new System.EventHandler(this.Gnrt_Blocks_Transactions_Click);
             // 
             // label2
             // 
@@ -93,17 +83,25 @@
             this.dataGridView.Size = new System.Drawing.Size(661, 582);
             this.dataGridView.TabIndex = 12;
             // 
+            // Block_List
+            // 
+            this.Block_List.FormattingEnabled = true;
+            this.Block_List.Location = new System.Drawing.Point(296, 34);
+            this.Block_List.Name = "Block_List";
+            this.Block_List.Size = new System.Drawing.Size(120, 576);
+            this.Block_List.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1111, 648);
+            this.Controls.Add(this.Block_List);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.Block_List_View);
             this.Controls.Add(this.Gnrt_Blocks_Transactions);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.Blk_Range_Txtbox);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -113,12 +111,12 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox Blk_Range_Txtbox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Gnrt_Blocks_Transactions;
-        private System.Windows.Forms.ListView Block_List_View;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.ListBox Block_List;
     }
 }
 

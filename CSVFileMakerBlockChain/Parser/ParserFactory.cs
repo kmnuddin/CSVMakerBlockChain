@@ -36,16 +36,31 @@ namespace CSVFileMakerBlockChain.Model
 
         public IEnumerable<IBlockHeight> GetBlockHeights()
         {
+            for (int i = 0; i < _blockheights.Count; i++)
+            {
+                if (String.IsNullOrWhiteSpace(_blockheights[i].Height) || String.IsNullOrWhiteSpace(_blockheights[i].Hash))
+                    _blockheights.RemoveAt(i);
+            }
             return _blockheights;
         }
 
         public IEnumerable<IBlock> GetBlocks()
         {
+            for(int i = 0; i < _blocks.Count; i++)
+            {
+                if (_blocks[i] == null)
+                    _blocks.RemoveAt(i);
+            }
             return _blocks;
         }
 
         public IEnumerable<ITransaction> GetTransactions(IBlock block)
         {
+            for (int i = 0; i < block.Transactions.Count(); i++)
+            {
+                if (block.Transactions.ElementAt(i) == null)
+                    block.Transactions.ToList().RemoveAt(i);
+            }
             return block.Transactions;
         }
 
@@ -68,5 +83,7 @@ namespace CSVFileMakerBlockChain.Model
         {
             block.Transactions = transactions;
         }
+
+        
     }
 }
