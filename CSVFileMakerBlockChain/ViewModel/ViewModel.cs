@@ -19,9 +19,9 @@ namespace CSVFileMakerBlockChain.View_Model
         {
             for (int height = from; height <= to; height++)
             {
-                var block_list = await _webRepository.ParseBlockHeightAsync(height);
+                await _webRepository.ParseBlockHeightAsync(height);
 
-                BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(block_list.ToList());
+                BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(_webRepository.nodes_block_heights);
 
                 listbox.DataSource = binding_list;
                 listbox.DisplayMember = "Height"; 

@@ -13,13 +13,14 @@ namespace CSVFileMakerBlockChain.Repository
         private IParserFactory _parserFactory;
 
         public HtmlWeb web { get; set; }
-        public HtmlNode nodes_block_heights { get; set; }
-        public HtmlNode nodes_block_transactions { get; set; }
-        public HtmlNode node_blocks { get; set; }
+        public IList<IBlockHeight> nodes_block_heights { get; set; }
+        public IList<ITransaction> nodes_block_transactions { get; set; }
+        public IList<IBlock> node_blocks { get; set; }
 
         public WebRepository(IParserFactory parserFactory)
         {
             _parserFactory = parserFactory;
+
         }
 
         public IEnumerable<IBlockHeight> ParseBlockHeight(int height)
@@ -40,7 +41,9 @@ namespace CSVFileMakerBlockChain.Repository
                     }
                 }
                 _parserFactory.AddBlockHeight(block_height);
-                ParseBlocks(block_height);
+
+                nodes_block_heights = _parserFactory.GetBlockHeights().ToList();
+               
             }
 
             return _parserFactory.GetBlockHeights();
@@ -49,6 +52,11 @@ namespace CSVFileMakerBlockChain.Repository
         public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
         {
             return await Task.Run(() => ParseBlockHeight(height));
+        }
+
+        public async Task<IEnumerable<IBlock>> ParseBlocksAsynce(IBlockHeight blockHeight)
+        {
+            return await Task.Run(() => ParseBlocks(blockHeight));
         }
 
         public IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight)
@@ -77,8 +85,9 @@ namespace CSVFileMakerBlockChain.Repository
         }
 
         
-        public IEnumerable<ITransaction> ParseTransactions(IBlock block)
+        public IEnumerable<ITransaction> ParseTransactions(IBlock block, HtmlNode transaction_node)
         {
+
             return _parserFactory.GetTransactions(block);
         }
 
