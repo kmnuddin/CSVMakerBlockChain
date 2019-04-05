@@ -123,4 +123,7 @@
   <data name="url_block_height" xml:space="preserve">
     <value>https://www.blockchain.com/btc/block-height/</value>
   </data>
+  <data name="url_transaction" xml:space="preserve">
+    <value>https://www.blockchain.com/btc/tx/</value>
+  </data>
 </root>

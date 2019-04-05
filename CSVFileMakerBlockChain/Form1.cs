@@ -29,7 +29,7 @@ namespace CSVFileMakerBlockChain
         {
             try
             {
-                _viewModel.Populate_Block_ListAsync(Block_List, 565578, 565598);
+                _viewModel.Populate_Block_ListAsync(Block_List, 565578, 565583);
             }
             catch (Exception)
             {

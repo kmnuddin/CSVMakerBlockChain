@@ -77,5 +77,14 @@ namespace CSVFileMakerBlockChain {
                 return ResourceManager.GetString("url_block_height", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.blockchain.com/btc/tx/.
+        /// </summary>
+        internal static string url_transaction {
+            get {
+                return ResourceManager.GetString("url_transaction", resourceCulture);
+            }
+        }
     }
 }

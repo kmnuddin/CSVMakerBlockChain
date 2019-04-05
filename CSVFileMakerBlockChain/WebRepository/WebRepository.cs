@@ -12,8 +12,8 @@ namespace CSVFileMakerBlockChain.Repository
     {
         private IParserFactory _parserFactory;
 
-        private HtmlWeb web { get; set; }
-        private HtmlNode node { get; set; }
+        public HtmlWeb web { get; set; }
+        public HtmlNode node { get; set; }
 
         public WebRepository(IParserFactory parserFactory)
         {
@@ -71,11 +71,46 @@ namespace CSVFileMakerBlockChain.Repository
 
             return _parserFactory.GetBlocks();
         }
-
         
-        public IEnumerable<ITransaction> ParseTransactions(IBlock block, HtmlNode transaction_node)
+        public IEnumerable<string> ParseTransactionIDs()
+        {
+            var div_trans = node.Descendants("div").
+                Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("txdiv")).ToList();
+
+            var transaction_ids = new List<string>();
+
+            foreach (var div in div_trans)
+            {
+                var trans_table = div.Descendants("table").ToList();
+
+                foreach (var rows in trans_table[0].SelectNodes("tr"))
+                {
+
+                    var cells = rows.SelectNodes("th|td");
+                    foreach (var cell in cells)
+                    {
+                        var transaction_id = cell.Descendants("a").
+                            Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
+                            SingleOrDefault();
+
+                        if (transaction_id != null)
+                        {
+                            transaction_ids.Add(transaction_id.InnerText);
+                        }
+                        else
+                            break;
+                    }
+                }
+
+            }
+
+            return transaction_ids;
+        }
+
+        public IEnumerable<ITransaction> ParseTransactions(IBlock block, IEnumerable<string> transaction_ids)
         {
             
+
             return _parserFactory.GetTransactions(block);
         }
 
@@ -87,6 +122,11 @@ namespace CSVFileMakerBlockChain.Repository
         public async Task<IEnumerable<IBlock>> ParseBlocksAsync(IBlockHeight blockHeight)
         {
             return await Task.Run(() => ParseBlocks(blockHeight));
+        }
+
+        public async Task<IEnumerable<string>> ParseTransactionIDsAsync()
+        {
+            return await Task.Run(() => ParseTransactionIDs());
         }
 
 
