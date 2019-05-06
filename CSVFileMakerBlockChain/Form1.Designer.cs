@@ -43,6 +43,7 @@
             this.Blk_Range_Txtbox.Name = "Blk_Range_Txtbox";
             this.Blk_Range_Txtbox.Size = new System.Drawing.Size(147, 20);
             this.Blk_Range_Txtbox.TabIndex = 4;
+            this.Blk_Range_Txtbox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Blk_Range_Txtbox_KeyPress);
             // 
             // label1
             // 
@@ -55,7 +56,7 @@
             // 
             // Gnrt_Blocks_Transactions
             // 
-            this.Gnrt_Blocks_Transactions.Location = new System.Drawing.Point(34, 70);
+            this.Gnrt_Blocks_Transactions.Location = new System.Drawing.Point(34, 80);
             this.Gnrt_Blocks_Transactions.Name = "Gnrt_Blocks_Transactions";
             this.Gnrt_Blocks_Transactions.Size = new System.Drawing.Size(239, 28);
             this.Gnrt_Blocks_Transactions.TabIndex = 7;

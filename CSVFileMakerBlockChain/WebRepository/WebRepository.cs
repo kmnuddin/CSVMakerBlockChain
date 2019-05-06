@@ -109,7 +109,6 @@ namespace CSVFileMakerBlockChain.Repository
 
         public IEnumerable<ITransaction> ParseTransactions(IBlock block, IEnumerable<string> transaction_ids)
         {
-            
 
             return _parserFactory.GetTransactions(block);
         }

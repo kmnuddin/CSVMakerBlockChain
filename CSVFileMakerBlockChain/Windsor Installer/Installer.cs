@@ -25,12 +25,10 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
                 .Register(Component.For<IBlockHeight>().ImplementedBy<BlockHeight>().LifestyleTransient())
                 .Register(Component.For<IBlock>().ImplementedBy<Block>().LifestyleTransient())
                 .Register(Component.For<ITransaction>().ImplementedBy<Transaction>().LifestyleTransient())
+                .Register(Component.For<ISenderReciever>().ImplementedBy<SenderReciever>().LifestyleTransient())
                 .Register(Component.For<IParserFactory>().ImplementedBy<ParserFactory>().LifestyleTransient())
                 .Register(Component.For<IWebRepository>().ImplementedBy<WebRepository>().LifestyleSingleton())
                 .Register(Component.For<IViewModel>().ImplementedBy<ViewModel>().LifestyleSingleton())
-                //.Register(Component.For<IEnumerable<IBlock>>().ImplementedBy<List<Block>>().LifestyleTransient())
-                //.Register(Component.For<IEnumerable<IBlockHeight>>().ImplementedBy<List<BlockHeight>>().LifestyleTransient())
-                //.Register(Component.For<IEnumerable<ITransaction>>().ImplementedBy<List<Transaction>>().LifestyleTransient())
                 .Register(Component.For<HtmlNode>().LifestyleTransient())
                 .Register(Component.For<HtmlWeb>().LifestyleSingleton());
 

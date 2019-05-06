@@ -1,15 +1,6 @@
-﻿
-using CSVFileMakerBlockChain.Interfaces;
-using CSVFileMakerBlockChain.Properties;
-using HtmlAgilityPack;
+﻿using CSVFileMakerBlockChain.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CSVFileMakerBlockChain
@@ -29,13 +20,36 @@ namespace CSVFileMakerBlockChain
         {
             try
             {
-                _viewModel.Populate_Block_ListAsync(Block_List, 565578, 565583);
+                var ranges = Blk_Range_Txtbox.Text.Split(new char[] { '-' });
+                _viewModel.Populate_Block_ListAsync(Block_List, int.Parse(ranges[0]), int.Parse(ranges[1]));
             }
             catch (Exception)
             {
 
                 throw;
             }
+        }
+
+        private void Blk_Range_Txtbox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            string txt = (sender as TextBox).Text;
+
+            if (char.IsDigit(e.KeyChar) || e.KeyChar == (char) Keys.Back)
+            {
+                e.Handled = false;
+                return;
+            }
+            if (e.KeyChar == '-')
+            {
+                if (txt.Length != 0 && !txt.Contains('-'))
+                {
+                    e.Handled = false;
+                    return;
+                }
+
+            }
+            e.Handled = true;
+
         }
     }
 }

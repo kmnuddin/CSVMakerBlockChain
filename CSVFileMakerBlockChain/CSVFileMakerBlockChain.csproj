@@ -64,8 +64,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ISenderReciever.cs" />
     <Compile Include="Interfaces\IWebRepository.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="Model\SenderReciever.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="WebRepository\WebRepository.cs" />
     <Compile Include="Windsor Installer\Installer.cs" />
