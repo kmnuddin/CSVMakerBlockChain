@@ -21,12 +21,15 @@ namespace CSVFileMakerBlockChain
             try
             {
                 var ranges = Blk_Range_Txtbox.Text.Split(new char[] { '-' });
-                _viewModel.Populate_Block_ListAsync(Block_List, int.Parse(ranges[0]), int.Parse(ranges[1]));
-            }
-            catch (Exception)
-            {
 
-                throw;
+                if (ranges.Length > 1)
+                    _viewModel.Populate_Block_ListAsync(Block_List, int.Parse(ranges[0]), int.Parse(ranges[1]));
+                else
+                    _viewModel.Populate_Block_ListAsync(Block_List, int.Parse(ranges[0]), int.Parse(ranges[0]));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK);
             }
         }
 
@@ -50,6 +53,14 @@ namespace CSVFileMakerBlockChain
             }
             e.Handled = true;
 
+        }
+
+        private void Blk_Range_Txtbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                Gnrt_Blocks_Transactions_Click(sender, e);
+            }
         }
     }
 }

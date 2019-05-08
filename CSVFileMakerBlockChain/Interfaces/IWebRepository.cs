@@ -11,12 +11,12 @@ namespace CSVFileMakerBlockChain.Interfaces
     {
         IEnumerable<IBlockHeight> ParseBlockHeight(int height);
         IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight);
-        IEnumerable<ITransaction> ParseTransactions(IBlock block, IEnumerable<string> transaction_ids);
-        IEnumerable<string> ParseTransactionIDs();
+        IEnumerable<ITransaction> ParseTransactions(IBlock block);
+
 
         Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height);
         Task<IEnumerable<IBlock>> ParseBlocksAsync(IBlockHeight blockHeight);
-        Task<IEnumerable<string>> ParseTransactionIDsAsync();
+        Task<IEnumerable<ITransaction>> ParseTransactionsAsync(IBlock block);
 
         HtmlWeb web { get; set; }
         HtmlNode node { get; set; }

@@ -107,10 +107,48 @@ namespace CSVFileMakerBlockChain.Repository
             return transaction_ids;
         }
 
-        public IEnumerable<ITransaction> ParseTransactions(IBlock block, IEnumerable<string> transaction_ids)
+        public IEnumerable<ITransaction> ParseTransactions(IBlock block)
         {
+            var div_trans = node.Descendants("div").
+                Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("txdiv")).ToList();
 
-            return _parserFactory.GetTransactions(block);
+
+            foreach (var div in div_trans)
+            {
+                var transaction = IoC.GlobalContainer.Resolve<ITransaction>();
+
+                var trans_table = div.Descendants("table").ToList();
+
+                foreach (var rows in trans_table[0].SelectNodes("tr"))
+                {
+                    var cells = rows.SelectNodes("th|td");
+
+                    if(cells[0].Name == "th")
+                    {
+                        transaction.TransactionID = cells[0].Descendants("a").
+                            Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
+                            SingleOrDefault().InnerText;
+
+                        transaction.Size = cells[0].SelectSingleNode("//span[@type='hidden']").InnerText;
+
+
+                    }
+                    //foreach (var cell in cells)
+                    //{
+                    //    var transaction_id = cell.Descendants("a").
+                    //        Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
+                    //        SingleOrDefault();
+
+                    //    if (transaction_id != null)
+                    //        transaction.TransactionID = transaction_id.InnerText;
+
+                    //    var sender = 
+
+                    //}
+                }
+
+            }
+            return null;
         }
 
         public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
@@ -121,6 +159,11 @@ namespace CSVFileMakerBlockChain.Repository
         public async Task<IEnumerable<IBlock>> ParseBlocksAsync(IBlockHeight blockHeight)
         {
             return await Task.Run(() => ParseBlocks(blockHeight));
+        }
+
+        public async Task<IEnumerable<ITransaction>> ParseTransactionsAsync(IBlock block)
+        {
+            return await Task.Run(() => ParseTransactions(block));
         }
 
         public async Task<IEnumerable<string>> ParseTransactionIDsAsync()
@@ -210,7 +253,10 @@ namespace CSVFileMakerBlockChain.Repository
             var url_builder = new StringBuilder(StaticData.url_block);
             var url = url_builder.Append(hash).ToString();
             return url;
-        } 
+        }
+
+       
+
         #endregion
     }
 }

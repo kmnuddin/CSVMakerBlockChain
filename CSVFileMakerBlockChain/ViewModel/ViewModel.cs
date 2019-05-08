@@ -26,19 +26,27 @@ namespace CSVFileMakerBlockChain.View_Model
 
         public async Task Populate_Block_ListAsync(ListBox listbox, int from, int to)
         {
-            for (int height = from; height <= to; height++)
+            try
             {
-                nodes_block_heights = (List<IBlockHeight>) await _webRepository.ParseBlockHeightAsync(height);
+                for (int height = from; height <= to; height++)
+                {
+                    nodes_block_heights = (List<IBlockHeight>)await _webRepository.ParseBlockHeightAsync(height);
 
-                BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
+                    BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
 
-                node_blocks = (List<IBlock>) await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
+                    node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
 
-                transactions = (List<string>) await _webRepository.ParseTransactionIDsAsync();
-                
+                    nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last());
 
-                listbox.DataSource = binding_list;
-                listbox.DisplayMember = "Height"; 
+
+                    listbox.DataSource = binding_list;
+                    listbox.DisplayMember = "Height";
+                }
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK);
             }
         }
 
