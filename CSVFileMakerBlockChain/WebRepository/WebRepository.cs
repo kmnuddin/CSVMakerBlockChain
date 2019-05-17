@@ -10,7 +10,7 @@ namespace CSVFileMakerBlockChain.Repository
 {
     public class WebRepository : IWebRepository
     {
-        private IParserFactory _parserFactory;
+        IParserFactory _parserFactory;
 
         public HtmlWeb web { get; set; }
         public HtmlNode node { get; set; }
@@ -49,9 +49,7 @@ namespace CSVFileMakerBlockChain.Repository
             string url = build_Url(blockheight.Hash);
 
             node = web.Load(url).DocumentNode;
-            var div_block = node.Descendants("div").Where
-                (a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("col-md-6 col-sm-6")).ToList();
-
+            var div_block = node.Descendants("div").Where(fromClass("col-md-6 col-sm-6")).ToList();
 
             var table = div_block[0].SelectNodes("//table");
 
@@ -74,9 +72,7 @@ namespace CSVFileMakerBlockChain.Repository
         
         public IEnumerable<string> ParseTransactionIDs()
         {
-            var div_trans = node.Descendants("div").
-                Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("txdiv")).ToList();
-
+            var div_trans = node.Descendants("div").Where(fromClass("txdiv")).ToList();
             var transaction_ids = new List<string>();
 
             foreach (var div in div_trans)
@@ -90,7 +86,7 @@ namespace CSVFileMakerBlockChain.Repository
                     foreach (var cell in cells)
                     {
                         var transaction_id = cell.Descendants("a").
-                            Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
+                            Where(fromClass("hash-link")).
                             SingleOrDefault();
 
                         if (transaction_id != null)
@@ -107,49 +103,30 @@ namespace CSVFileMakerBlockChain.Repository
             return transaction_ids;
         }
 
-        public IEnumerable<ITransaction> ParseTransactions(IBlock block)
+        public IEnumerable<ITransaction> ParseTransactions(IBlock block, string transaction_id)
         {
-            var div_trans = node.Descendants("div").
-                Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("txdiv")).ToList();
+            string url = build_Url_tx(transaction_id);
+            var nodetx = web.Load(url).DocumentNode;
 
+            var txdiv = nodetx.Descendants("div").Single(fromClass("txdiv"));
+            var tx_sum_io = nodetx.Descendants("div").Where(fromClass("col-md-6 col-sm-6"));
 
-            foreach (var div in div_trans)
+            var block_transaction = IoC.GlobalContainer.Resolve<ITransaction>();
+
+            block_transaction.TransactionID = transaction_id;
+
+            var txdiv_senders = txdiv.Descendants("td").Single(fromClass("txtd hidden-phone mobile-f12 stack-mobile")).ChildNodes;
+
+            foreach (var txdiv_sender in txdiv_senders)
             {
-                var transaction = IoC.GlobalContainer.Resolve<ITransaction>();
-
-                var trans_table = div.Descendants("table").ToList();
-
-                foreach (var rows in trans_table[0].SelectNodes("tr"))
-                {
-                    var cells = rows.SelectNodes("th|td");
-
-                    if(cells[0].Name == "th")
-                    {
-                        transaction.TransactionID = cells[0].Descendants("a").
-                            Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
-                            SingleOrDefault().InnerText;
-
-                        transaction.Size = cells[0].SelectSingleNode("//span[@type='hidden']").InnerText;
-
-
-                    }
-                    //foreach (var cell in cells)
-                    //{
-                    //    var transaction_id = cell.Descendants("a").
-                    //        Where(a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains("hash-link")).
-                    //        SingleOrDefault();
-
-                    //    if (transaction_id != null)
-                    //        transaction.TransactionID = transaction_id.InnerText;
-
-                    //    var sender = 
-
-                    //}
-                }
-
+                Console.WriteLine(txdiv_sender.InnerText);
             }
+
+
             return null;
         }
+
+       
 
         public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
         {
@@ -161,9 +138,9 @@ namespace CSVFileMakerBlockChain.Repository
             return await Task.Run(() => ParseBlocks(blockHeight));
         }
 
-        public async Task<IEnumerable<ITransaction>> ParseTransactionsAsync(IBlock block)
+        public async Task<IEnumerable<ITransaction>> ParseTransactionsAsync(IBlock block, string transaction_id)
         {
-            return await Task.Run(() => ParseTransactions(block));
+            return await Task.Run(() => ParseTransactions(block, transaction_id));
         }
 
         public async Task<IEnumerable<string>> ParseTransactionIDsAsync()
@@ -173,7 +150,12 @@ namespace CSVFileMakerBlockChain.Repository
 
 
         #region private methods
-        private void populate_Blockheight_Obj_prop(IBlockHeight block_height, HtmlNodeCollection cells, HtmlNode cell)
+        Func<HtmlNode, bool> fromClass(string class_val)
+        {
+            return a => a.Attributes.Contains("class") && a.Attributes["class"].Value.Contains(class_val);
+        }
+
+        void populate_Blockheight_Obj_prop(IBlockHeight block_height, HtmlNodeCollection cells, HtmlNode cell)
         {
             switch (cell.InnerText)
             {
@@ -186,7 +168,7 @@ namespace CSVFileMakerBlockChain.Repository
             }
         }
 
-        private void populate_Block_Obj_Prop(IBlock block, HtmlNodeCollection cells, HtmlNode cell)
+        void populate_Block_Obj_Prop(IBlock block, HtmlNodeCollection cells, HtmlNode cell)
         {
             switch (cell.InnerText)
             {
@@ -236,26 +218,31 @@ namespace CSVFileMakerBlockChain.Repository
             }
         }
 
-        private string getCellValue(HtmlNodeCollection cells)
+        string getCellValue(HtmlNodeCollection cells)
         {
             return cells[1].InnerText.TrimEnd();
         }
 
-        private string build_Url(int height)
+        string build_Url(int height)
         {
             var url_builder = new StringBuilder(StaticData.url_block_height);
             var url = url_builder.Append(height).ToString();
             return url;
         }
 
-        private string build_Url(string hash)
+        string build_Url(string hash)
         {
             var url_builder = new StringBuilder(StaticData.url_block);
             var url = url_builder.Append(hash).ToString();
             return url;
         }
 
-       
+        string build_Url_tx(string transaction_id)
+        {
+            var url_builder = new StringBuilder(StaticData.url_transaction);
+            var url = url_builder.Append(transaction_id).ToString();
+            return url;
+        }
 
         #endregion
     }

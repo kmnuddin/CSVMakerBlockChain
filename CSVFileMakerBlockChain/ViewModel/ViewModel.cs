@@ -16,7 +16,7 @@ namespace CSVFileMakerBlockChain.View_Model
         public IList<IBlock> node_blocks { get; set; }
 
         private IWebRepository _webRepository;
-        private IList<string> transactions;
+        private IList<string> transaction_ids;
 
         public ViewModel(IWebRepository webRepository)
         {
@@ -32,12 +32,16 @@ namespace CSVFileMakerBlockChain.View_Model
                 {
                     nodes_block_heights = (List<IBlockHeight>)await _webRepository.ParseBlockHeightAsync(height);
 
-                    BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
-
                     node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
 
-                    nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last());
+                    transaction_ids = (List<string>) await _webRepository.ParseTransactionIDsAsync();
 
+                    foreach (var id in transaction_ids)
+                    {
+                        nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
+                    }
+
+                    BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
 
                     listbox.DataSource = binding_list;
                     listbox.DisplayMember = "Height";
