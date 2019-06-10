@@ -13,14 +13,14 @@ namespace CSVFileMakerBlockChain.Interfaces
         IBlockHeight GetBlockHeight(string height);
         IBlock GetBlock(IBlockHeight height);
         ITransaction GetTransaction(IBlock block,string transaction_id);
-        IEnumerable<IBlockHeight> GetBlockHeights();
-        IEnumerable<IBlock> GetBlocks();
-        IEnumerable<ITransaction> GetTransactions(IBlock block);
+        ICollection<IBlockHeight> GetBlockHeights();
+        ICollection<IBlock> GetBlocks();
+        ICollection<ITransaction> GetTransactions(IBlock block);
 
         void AddBlockHeight(IBlockHeight blockheight);
         void AddBlocks(IBlock block);
         void AddTransaction(IBlock block, ITransaction transaction);
-        void AddTransactions(IBlock block, IEnumerable<ITransaction> transactions);
+        void AddTransactions(IBlock block, ICollection<ITransaction> transactions);
 
 
     }

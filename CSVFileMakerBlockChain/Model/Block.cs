@@ -28,7 +28,7 @@ namespace CSVFileMakerBlockChain.Model
         public string Nonce { get; set; }
         public string Block_Reward { get; set; }
         public IBlockHeight Height { get; set; }
-        public IEnumerable<ITransaction> Transactions { get; set; }
+        public ICollection<ITransaction> Transactions { get; set; }
         string IBlock.Block { get; set; }
         
     }

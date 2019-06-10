@@ -38,7 +38,8 @@ namespace CSVFileMakerBlockChain.View_Model
 
                     foreach (var id in transaction_ids)
                     {
-                        nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
+                       // nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
+                       nodes_block_transactions = (List<ITransaction>) await _webRepository.ParseTransactions_OPT_Async(node_blocks.Last(), id);
                     }
 
                     BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);

@@ -24,6 +24,6 @@ namespace CSVFileMakerBlockChain.Interfaces
         string Version { get; set; }
         string Nonce { get; set; }
         string Block_Reward { get; set; }
-        IEnumerable<ITransaction> Transactions { get; set; }
+        ICollection<ITransaction> Transactions { get; set; }
     }
 }

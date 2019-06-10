@@ -18,7 +18,6 @@ namespace CSVFileMakerBlockChain.Repository
         public WebRepository(IParserFactory parserFactory)
         {
             _parserFactory = parserFactory;
-
         }
 
         public IEnumerable<IBlockHeight> ParseBlockHeight(int height)
@@ -119,14 +118,34 @@ namespace CSVFileMakerBlockChain.Repository
 
             foreach (var txdiv_sender in txdiv_senders)
             {
-                Console.WriteLine(txdiv_sender.InnerText);
+                   
             }
-
 
             return null;
         }
 
-       
+        public IEnumerable<ITransaction> ParseTransactions_OPT(IBlock block, string transaction_id)
+        {
+            var div_trans = node.Descendants("div").Where(fromClass("txdiv")).ToList();
+
+            var block_transaction = IoC.GlobalContainer.Resolve<ITransaction>();
+
+            block_transaction.TransactionID = transaction_id;
+
+            //var trs = div_trans.Single(fromClass("hash-link")).ChildNodes;
+
+            foreach(var div in div_trans)
+            {
+                var spans = div.Descendants("span").Where(fromClass("pull-right")).ToList();
+                Console.WriteLine(spans[0].ChildNodes[0].InnerHtml);
+                //foreach(var span in spans)
+                //{
+                //    Console.WriteLine(span.XPath);
+                //}
+            }
+            return _parserFactory.GetTransactions(block).ToList();
+
+        }
 
         public async Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height)
         {
@@ -146,6 +165,11 @@ namespace CSVFileMakerBlockChain.Repository
         public async Task<IEnumerable<string>> ParseTransactionIDsAsync()
         {
             return await Task.Run(() => ParseTransactionIDs());
+        }
+
+        public async Task<IEnumerable<ITransaction>> ParseTransactions_OPT_Async(IBlock block, string transaction_id)
+        {
+            return await Task.Run(() => ParseTransactions_OPT(block, transaction_id));
         }
 
 
@@ -243,6 +267,65 @@ namespace CSVFileMakerBlockChain.Repository
             var url = url_builder.Append(transaction_id).ToString();
             return url;
         }
+
+        private static bool IsNodeVisible(HtmlNode node)
+        {
+            var attribute = node.Attributes["style"];
+
+            bool thisVisible = false;
+
+            if (attribute == null || CheckStyleVisibility(attribute.Value))
+                thisVisible = true;
+
+            if (thisVisible && node.ParentNode != null)
+                return IsNodeVisible(node.ParentNode);
+
+            return thisVisible;
+        }
+
+        static bool CheckStyleVisibility(string style)
+        {
+            if (string.IsNullOrWhiteSpace(style))
+                return true;
+
+            var keys = ParseHtmlStyleString(style);
+
+            if (keys.Keys.Contains("display"))
+            {
+                string display = keys["display"];
+                if (display != null && display == "none")
+                    return false;
+            }
+
+            if (keys.Keys.Contains("visibility"))
+            {
+                string visibility = keys["visibility"];
+                if (visibility != null && visibility == "hidden")
+                    return false;
+            }
+
+            return true;
+        }
+
+        static Dictionary<string, string> ParseHtmlStyleString(string style)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            style = style.Replace(" ", "").ToLowerInvariant();
+
+            string[] settings = style.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string s in settings)
+            {
+                if (!s.Contains(':'))
+                    continue;
+                string[] data = s.Split(':');
+                result.Add(data[0], data[1]);
+            }
+
+            return result;
+        }
+
 
         #endregion
     }

@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace CSVFileMakerBlockChain.Model
     {
         private readonly IList<IBlockHeight> _blockheights;
         private readonly IList<IBlock> _blocks;
-        
-        public ParserFactory(IEnumerable<IBlockHeight> blockheights, IEnumerable<IBlock> blocks)
+
+        public ParserFactory(ICollection<IBlockHeight> blockheights, ICollection<IBlock> blocks)
         {
             _blockheights = blockheights.ToList();
             _blocks = blocks.ToList();
@@ -31,10 +32,11 @@ namespace CSVFileMakerBlockChain.Model
 
         public ITransaction GetTransaction(IBlock block, string transaction_id)
         {
+
             return block.Transactions.SingleOrDefault(a => a.TransactionID == transaction_id);
         }
 
-        public IEnumerable<IBlockHeight> GetBlockHeights()
+        public ICollection<IBlockHeight> GetBlockHeights()
         {
             for (int i = 0; i < _blockheights.Count; i++)
             {
@@ -44,9 +46,9 @@ namespace CSVFileMakerBlockChain.Model
             return _blockheights;
         }
 
-        public IEnumerable<IBlock> GetBlocks()
+        public ICollection<IBlock> GetBlocks()
         {
-            for(int i = 0; i < _blocks.Count; i++)
+            for (int i = 0; i < _blocks.Count; i++)
             {
                 if (String.IsNullOrWhiteSpace(_blocks[i].Height.Height))
                     _blocks.RemoveAt(i);
@@ -54,7 +56,7 @@ namespace CSVFileMakerBlockChain.Model
             return _blocks;
         }
 
-        public IEnumerable<ITransaction> GetTransactions(IBlock block)
+        public ICollection<ITransaction> GetTransactions(IBlock block)
         {
             for (int i = 0; i < block.Transactions.Count(); i++)
             {
@@ -76,14 +78,23 @@ namespace CSVFileMakerBlockChain.Model
 
         public void AddTransaction(IBlock block, ITransaction transaction)
         {
-            block.Transactions.ToList().Add(transaction);
+            if (block.Transactions.IsReadOnly)
+            {
+                block.Transactions = new List<ITransaction>();
+            }
+            block.Transactions.Add(transaction);
         }
 
-        public void AddTransactions(IBlock block, IEnumerable<ITransaction> transactions)
+        public void AddTransactions(IBlock block, ICollection<ITransaction> transactions)
         {
-            block.Transactions = transactions;
+            if (block.Transactions.IsReadOnly)
+            {
+                block.Transactions = new List<ITransaction>();
+            }
+            block.Transactions.ToList().AddRange(transactions);
+            
         }
 
-        
+
     }
 }
