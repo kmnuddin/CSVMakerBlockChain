@@ -45,7 +45,7 @@ namespace CSVFileMakerBlockChain.Repository
 
         public IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight)
         {
-            string url = build_Url(blockheight.Hash);
+            string url = build_Url(blockheight.Hash + "?show_adv=true");
 
             node = web.Load(url).DocumentNode;
             var div_block = node.Descendants("div").Where(fromClass("col-md-6 col-sm-6")).ToList();
@@ -68,7 +68,7 @@ namespace CSVFileMakerBlockChain.Repository
 
             return _parserFactory.GetBlocks();
         }
-        
+
         public IEnumerable<string> ParseTransactionIDs()
         {
             var div_trans = node.Descendants("div").Where(fromClass("txdiv")).ToList();
@@ -118,30 +118,90 @@ namespace CSVFileMakerBlockChain.Repository
 
             foreach (var txdiv_sender in txdiv_senders)
             {
-                   
+
             }
 
             return null;
         }
 
-        public IEnumerable<ITransaction> ParseTransactions_OPT(IBlock block, string transaction_id)
+        public IEnumerable<ITransaction> ParseTransactions_OPT(IBlock block)
         {
             var div_trans = node.Descendants("div").Where(fromClass("txdiv")).ToList();
-
-            var block_transaction = IoC.GlobalContainer.Resolve<ITransaction>();
-
-            block_transaction.TransactionID = transaction_id;
-
             //var trs = div_trans.Single(fromClass("hash-link")).ChildNodes;
 
-            foreach(var div in div_trans)
+            foreach (var div in div_trans)
             {
-                var spans = div.Descendants("span").Where(fromClass("pull-right")).ToList();
-                Console.WriteLine(spans[0].ChildNodes[0].InnerHtml);
-                //foreach(var span in spans)
-                //{
-                //    Console.WriteLine(span.XPath);
-                //}
+                var tx_obj = IoC.GlobalContainer.Resolve<ITransaction>();
+                tx_obj.Block = block;
+
+                var trs = div.Descendants("tr").ToList();
+
+                var trs_id = trs[0].Descendants("a").Where(fromClass("hash-link")).ToList();
+                tx_obj.TransactionID = trs_id[0].InnerText.TrimEnd();
+
+                var trs_size_fee = trs[0].Descendants("span").Where(fromClass("hidden-phone")).ToList();
+                var size_fee_raw = trs_size_fee[0].InnerText.Split(new char[] { ':', '-', '(', ')' });
+
+                tx_obj.Fee = size_fee_raw.SingleOrDefault(a => a.Contains("BTC"));
+                tx_obj.Size = size_fee_raw.SingleOrDefault(a => a.Contains("bytes"));
+
+                var tds_sender_reciever = trs[1].Descendants("td").ToList();
+
+                var tds_sender = tds_sender_reciever.SingleOrDefault(fromClass("txtd hidden-phone mobile-f12 stack-mobile"));
+
+                var tds_sender_raw_hashes = tds_sender.Descendants("a").Where(a => !a.InnerText.Contains("Output") && !string.IsNullOrWhiteSpace(a.InnerText)).ToList();
+                var tds_sender_raw_amounts = tds_sender.Descendants("span").Where(a => a.InnerText.Contains("BTC")).ToList();
+
+                var tds_reciever = tds_sender_reciever.SingleOrDefault(fromClass("txtd mobile-f12 stack-mobile"));
+
+                var tds_reciever_raw_hashes = tds_reciever.Descendants("a").
+                    Where(a => !a.InnerText.Contains("Spent") && !a.InnerText.Contains("Unspent") && !string.IsNullOrWhiteSpace(a.InnerText)).ToList();
+                var tds_reciever_raw_amounts = tds_reciever.Descendants("span").Where(fromClass("pull-right hidden-phone")).ToList();
+
+
+
+                if (tds_sender_raw_hashes.Count == 0)
+                {
+                    for (int i = 0; i < tds_reciever_raw_hashes.Count; i++)
+                    {
+                        var tx_sender = IoC.GlobalContainer.Resolve<ISenderReciever>();
+                        var tx_reciever = IoC.GlobalContainer.Resolve<ISenderReciever>();
+
+                        tx_sender.Amount = tds_reciever_raw_amounts[0].InnerText;
+                        tx_sender.Hash = "";
+
+                        tx_reciever.Amount = tds_reciever_raw_amounts[0].InnerText;
+                        tx_reciever.Hash = tds_reciever_raw_hashes[0].InnerText;
+
+                        _parserFactory.AddSender(tx_obj, tx_sender);
+                        _parserFactory.AddReciever(tx_obj, tx_reciever);
+
+
+                    }
+                    _parserFactory.AddTransaction(block, tx_obj);
+                    continue;
+                }
+
+                for (int i = 0; i < tds_sender_raw_hashes.Count; i++)
+                {
+                    var tx_sender = IoC.GlobalContainer.Resolve<ISenderReciever>();
+                    tx_sender.Amount = tds_sender_raw_amounts[0].InnerText;
+                    tx_sender.Hash = tds_sender_raw_hashes[0].InnerText;
+
+                    _parserFactory.AddSender(tx_obj, tx_sender);
+                }
+
+                for (int i = 0; i < tds_reciever_raw_hashes.Count; i++)
+                {
+                    var tx_reciever = IoC.GlobalContainer.Resolve<ISenderReciever>();
+                    tx_reciever.Amount = tds_reciever_raw_amounts[0].InnerText;
+                    tx_reciever.Hash = tds_reciever_raw_hashes[0].InnerText;
+
+                    _parserFactory.AddReciever(tx_obj, tx_reciever);
+                }
+                _parserFactory.AddTransaction(block, tx_obj);
+
+
             }
             return _parserFactory.GetTransactions(block).ToList();
 
@@ -167,9 +227,9 @@ namespace CSVFileMakerBlockChain.Repository
             return await Task.Run(() => ParseTransactionIDs());
         }
 
-        public async Task<IEnumerable<ITransaction>> ParseTransactions_OPT_Async(IBlock block, string transaction_id)
+        public async Task<IEnumerable<ITransaction>> ParseTransactions_OPT_Async(IBlock block)
         {
-            return await Task.Run(() => ParseTransactions_OPT(block, transaction_id));
+            return await Task.Run(() => ParseTransactions_OPT(block));
         }
 
 

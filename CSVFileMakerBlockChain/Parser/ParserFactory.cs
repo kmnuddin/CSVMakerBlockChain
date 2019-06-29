@@ -95,6 +95,50 @@ namespace CSVFileMakerBlockChain.Model
             
         }
 
+        public ICollection<ISenderReciever> GetSenders(ITransaction transaction)
+        {
+            return transaction.Senders;
+        }
 
+        public ICollection<ISenderReciever> GetRecievers(ITransaction transaction)
+        {
+            return transaction.Receivers;
+        }
+
+        public void AddSender(ITransaction transaction, ISenderReciever sender)
+        {
+            if (transaction.Senders.IsReadOnly)
+            {
+                transaction.Senders = new List<ISenderReciever>();
+            }
+            transaction.Senders.Add(sender);
+        }
+
+        public void AddSenders(ITransaction transaction, ICollection<ISenderReciever> senders)
+        {
+            if (transaction.Senders.IsReadOnly)
+            {
+                transaction.Senders = new List<ISenderReciever>();
+            }
+            transaction.Senders.ToList().AddRange(senders);
+        }
+
+        public void AddReciever(ITransaction transaction, ISenderReciever reciever)
+        {
+            if (transaction.Receivers.IsReadOnly)
+            {
+                transaction.Receivers = new List<ISenderReciever>();
+            }
+            transaction.Receivers.Add(reciever);
+        }
+
+        public void AddRecievers(ITransaction transaction, ICollection<ISenderReciever> recievers)
+        {
+            if (transaction.Receivers.IsReadOnly)
+            {
+                transaction.Receivers = new List<ISenderReciever>();
+            }
+            transaction.Receivers.ToList().AddRange(recievers);
+        }
     }
 }

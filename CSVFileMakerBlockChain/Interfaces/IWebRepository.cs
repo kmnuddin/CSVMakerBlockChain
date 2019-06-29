@@ -13,13 +13,13 @@ namespace CSVFileMakerBlockChain.Interfaces
         IEnumerable<IBlock> ParseBlocks(IBlockHeight blockheight);
         IEnumerable<ITransaction> ParseTransactions(IBlock block, string transaction_id);
         IEnumerable<string> ParseTransactionIDs();
-        IEnumerable<ITransaction> ParseTransactions_OPT(IBlock block, string transaction_id);
+        IEnumerable<ITransaction> ParseTransactions_OPT(IBlock block);
 
 
         Task<IEnumerable<IBlockHeight>> ParseBlockHeightAsync(int height);
         Task<IEnumerable<IBlock>> ParseBlocksAsync(IBlockHeight blockHeight);
         Task<IEnumerable<ITransaction>> ParseTransactionsAsync(IBlock block, string transaction_id);
-        Task<IEnumerable<ITransaction>> ParseTransactions_OPT_Async(IBlock block, string transaction_id);
+        Task<IEnumerable<ITransaction>> ParseTransactions_OPT_Async(IBlock block);
         Task<IEnumerable<string>> ParseTransactionIDsAsync();
 
 

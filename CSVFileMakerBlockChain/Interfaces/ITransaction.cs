@@ -10,8 +10,8 @@ namespace CSVFileMakerBlockChain.Interfaces
     {
         IBlock Block { get; set; }
         string TransactionID { get; set; }
-        IEnumerable<ISenderReciever> Senders { get; set; }
-        IEnumerable<ISenderReciever> Receivers { get; set; }
+        ICollection<ISenderReciever> Senders { get; set; }
+        ICollection<ISenderReciever> Receivers { get; set; }
         string Change { get; set; }
         string Size { get; set; }
         string Fee { get; set; }

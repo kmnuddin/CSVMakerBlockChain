@@ -34,13 +34,13 @@ namespace CSVFileMakerBlockChain.View_Model
 
                     node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
 
-                    transaction_ids = (List<string>) await _webRepository.ParseTransactionIDsAsync();
-
-                    foreach (var id in transaction_ids)
-                    {
-                       // nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
-                       nodes_block_transactions = (List<ITransaction>) await _webRepository.ParseTransactions_OPT_Async(node_blocks.Last(), id);
-                    }
+                    //transaction_ids = (List<string>) await _webRepository.ParseTransactionIDsAsync();
+                    nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactions_OPT_Async(node_blocks.Last());
+                    //foreach (var id in transaction_ids)
+                    //{
+                    //   // nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
+                      
+                    //}
 
                     BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
 
