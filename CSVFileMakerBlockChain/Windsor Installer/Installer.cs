@@ -9,6 +9,7 @@ using CSVFileMakerBlockChain.View_Model;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,11 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
                 .Register(Component.For<IWebRepository>().ImplementedBy<WebRepository>().LifestyleSingleton())
                 .Register(Component.For<IViewModel>().ImplementedBy<ViewModel>().LifestyleSingleton())
                 .Register(Component.For<HtmlNode>().LifestyleTransient())
-                .Register(Component.For<HtmlWeb>().LifestyleSingleton());
+                .Register(Component.For<HtmlWeb>().LifestyleSingleton())
+                .Register(Component.For<DataTable>().LifestyleTransient())
+                .Register(Component.For<DataColumn>().LifestyleTransient())
+                .Register(Component.For<DataRow>().LifestyleTransient())
+                .Register(Component.For<DataSet>().LifestyleSingleton());
 
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, true));
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,6 +15,11 @@ namespace CSVFileMakerBlockChain.Interfaces
         IList<ITransaction> nodes_block_transactions { get; set; }
         IList<IBlock> node_blocks { get; set; }
 
+
+        DataTable Construct_Datatable_for_block(IBlock block);
+        DataTable Construct_Datatable_for_tx(ICollection<ITransaction> transactions);
+
+        DataSet Get_All_dt_blocks_tx();
        
     }
 }

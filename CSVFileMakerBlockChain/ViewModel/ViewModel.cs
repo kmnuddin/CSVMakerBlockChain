@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace CSVFileMakerBlockChain.View_Model
         public IList<ITransaction> nodes_block_transactions { get; set; }
         public IList<IBlock> node_blocks { get; set; }
 
-        private IWebRepository _webRepository;
-        private IList<string> transaction_ids;
+        IWebRepository _webRepository;
+        IList<string> transaction_ids;
+        DataSet _dataset;
 
-        public ViewModel(IWebRepository webRepository)
+        public ViewModel(IWebRepository webRepository, DataSet dataSet)
         {
             _webRepository = webRepository;
+            _dataset = dataSet;
 
         }
 
@@ -39,8 +42,10 @@ namespace CSVFileMakerBlockChain.View_Model
                     //foreach (var id in transaction_ids)
                     //{
                     //   // nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactionsAsync(node_blocks.Last(), id); 
-                      
+
                     //}
+
+                    var dt = await Task.Run(() => Construct_Datatable_for_block(node_blocks.Last()));
 
                     BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
 
@@ -55,6 +60,32 @@ namespace CSVFileMakerBlockChain.View_Model
             }
         }
 
-        
+        public DataTable Construct_Datatable_for_block(IBlock block)
+        {
+            var dt = IoC.GlobalContainer.Resolve<DataTable>();
+
+            var props = block.GetType().GetProperties();
+
+            foreach (var prop in props)
+            {
+                var dt_col = IoC.GlobalContainer.Resolve<DataColumn>();
+                dt_col.DataType = prop.PropertyType;
+                dt_col.ColumnName = prop.Name;
+
+                dt.Columns.Add(dt_col);
+            }
+
+            return dt;
+        }
+
+        public DataTable Construct_Datatable_for_tx(ICollection<ITransaction> transactions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataSet Get_All_dt_blocks_tx()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
