@@ -66,7 +66,7 @@ namespace CSVFileMakerBlockChain
         private void Block_List_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listbox = sender as ListBox;
-            var block_table = _viewModel.dataSet.Tables[listbox.SelectedIndex];
+            var block_table = _viewModel.dataSet_block.Tables[listbox.SelectedIndex];
 
             DataGridView_block.DataSource = block_table;
         }

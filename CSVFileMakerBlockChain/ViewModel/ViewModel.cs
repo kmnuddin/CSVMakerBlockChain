@@ -15,11 +15,12 @@ namespace CSVFileMakerBlockChain.View_Model
         public IList<IBlockHeight> nodes_block_heights { get; set; }
         public IList<ITransaction> nodes_block_transactions { get; set; }
         public IList<IBlock> node_blocks { get; set; }
-        public DataSet dataSet { get; set; }
+        public DataSet dataSet_block { get; set; }
+        public DataSet dataSet_tx { get; set; }
 
         IWebRepository _webRepository;
         IList<string> transaction_ids;
-        
+
 
         public ViewModel(IWebRepository webRepository)
         {
@@ -45,7 +46,7 @@ namespace CSVFileMakerBlockChain.View_Model
                     //}
 
                     var dt = await Task.Run(() => Construct_Datatable_for_block(node_blocks.Last()));
-                    dataSet.Tables.Add(dt);
+                    dataSet_block.Tables.Add(dt);
 
 
                     BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
@@ -75,7 +76,7 @@ namespace CSVFileMakerBlockChain.View_Model
                     var dt_col = IoC.GlobalContainer.Resolve<DataColumn>();
                     if (!prop.Name.Equals("Height", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        dt_col.DataType = prop.PropertyType; 
+                        dt_col.DataType = prop.PropertyType;
                     }
                     else
                     {
@@ -85,14 +86,14 @@ namespace CSVFileMakerBlockChain.View_Model
 
                     dt.Columns.Add(dt_col);
                 }
-                
+
             }
             var row = dt.NewRow();
             foreach (var prop in props)
             {
                 if (prop.Name.Equals("Transactions", StringComparison.CurrentCultureIgnoreCase))
                     continue;
-                if(!prop.Name.Equals("Height", StringComparison.CurrentCultureIgnoreCase))
+                if (!prop.Name.Equals("Height", StringComparison.CurrentCultureIgnoreCase))
                 {
                     row[prop.Name] = prop.GetValue(block);
                 }
@@ -107,9 +108,37 @@ namespace CSVFileMakerBlockChain.View_Model
             return dt;
         }
 
-        public DataTable Construct_Datatable_for_tx(ICollection<ITransaction> transactions)
+        public DataTable Construct_Datatable_for_tx(IBlock block, ICollection<ITransaction> transactions)
         {
-            throw new NotImplementedException();
+            var dt = new DataTable();
+            dt.TableName = block.Height.Height;
+            var props = typeof(ITransaction).GetProperties();
+            foreach (var prop in props)
+            {
+                var dt_col = IoC.GlobalContainer.Resolve<DataColumn>();
+                if (!prop.Equals(typeof(ISenderReciever)))
+                {
+                    dt_col.DataType = prop.PropertyType;
+                }
+                else
+                {
+                    dt_col.DataType = typeof(string);
+                }
+                dt_col.ColumnName = prop.Name;
+                dt.Columns.Add(dt_col);
+            }
+            foreach (var tx in transactions)
+            {
+                var count_sn = tx.Senders.Count;
+                var count_tx = tx.Receivers.Count;
+
+                if(count_sn > count_tx)
+                {
+                    foreach(var )
+                }
+            }
+
+            return dt;
         }
 
         public DataSet Get_All_dt_blocks_tx()
