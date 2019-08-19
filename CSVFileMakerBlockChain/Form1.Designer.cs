@@ -35,13 +35,13 @@
             this.Block_List = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DataGridView_block = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DataGridView_tx = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_block)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_tx)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,6 +91,7 @@
             this.Block_List.Name = "Block_List";
             this.Block_List.Size = new System.Drawing.Size(120, 576);
             this.Block_List.TabIndex = 13;
+            this.Block_List.SelectedIndexChanged += new System.EventHandler(this.Block_List_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -116,17 +117,6 @@
             this.tabPage1.Text = "Block Info";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.DataGridView_tx);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(637, 550);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Transactions";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // DataGridView_block
             // 
             this.DataGridView_block.AllowUserToAddRows = false;
@@ -138,6 +128,17 @@
             this.DataGridView_block.ReadOnly = true;
             this.DataGridView_block.Size = new System.Drawing.Size(631, 544);
             this.DataGridView_block.TabIndex = 0;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.DataGridView_tx);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(637, 550);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Transactions";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // DataGridView_tx
             // 
@@ -166,8 +167,8 @@
             this.Text = "Form1";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_block)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_tx)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

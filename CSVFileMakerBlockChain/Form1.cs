@@ -62,5 +62,13 @@ namespace CSVFileMakerBlockChain
                 Gnrt_Blocks_Transactions_Click(sender, e);
             }
         }
+
+        private void Block_List_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var listbox = sender as ListBox;
+            var block_table = _viewModel.dataSet.Tables[listbox.SelectedIndex];
+
+            DataGridView_block.DataSource = block_table;
+        }
     }
 }

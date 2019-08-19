@@ -21,7 +21,7 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            
+
             container
                 .Register(Component.For<IBlockHeight>().ImplementedBy<BlockHeight>().LifestyleTransient())
                 .Register(Component.For<IBlock>().ImplementedBy<Block>().LifestyleTransient())
@@ -32,10 +32,10 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
                 .Register(Component.For<IViewModel>().ImplementedBy<ViewModel>().LifestyleSingleton())
                 .Register(Component.For<HtmlNode>().LifestyleTransient())
                 .Register(Component.For<HtmlWeb>().LifestyleSingleton())
+                .Register(Component.For<DataSet>().LifestyleSingleton())
                 .Register(Component.For<DataTable>().LifestyleTransient())
                 .Register(Component.For<DataColumn>().LifestyleTransient())
-                .Register(Component.For<DataRow>().LifestyleTransient())
-                .Register(Component.For<DataSet>().LifestyleSingleton());
+                .Register(Component.For<DataRow>().LifestyleTransient());
 
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, true));
         }
