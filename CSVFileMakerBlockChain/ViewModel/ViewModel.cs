@@ -45,8 +45,10 @@ namespace CSVFileMakerBlockChain.View_Model
 
                     //}
 
-                    var dt = await Task.Run(() => Construct_Datatable_for_block(node_blocks.Last()));
-                    dataSet_block.Tables.Add(dt);
+                    var dt_block = await Task.Run(() => Construct_Datatable_for_block(node_blocks.Last()));
+                    dataSet_block.Tables.Add(dt_block);
+
+                    var dt_tx = await Task.Run(() => Construct_Datatable_for_tx(node_blocks.Last(), nodes_block_transactions));
 
 
                     BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
@@ -126,15 +128,52 @@ namespace CSVFileMakerBlockChain.View_Model
                 }
                 dt_col.ColumnName = prop.Name;
                 dt.Columns.Add(dt_col);
+                if (prop.Name.Equals("Senders", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var dt_col_amount_sn = IoC.GlobalContainer.Resolve<DataColumn>();
+                    dt_col_amount_sn.DataType = typeof(string);
+                    dt_col_amount_sn.ColumnName = "amount_sn";
+                    dt.Columns.Add(dt_col_amount_sn);
+                }
+                if (prop.Name.Equals("Receivers", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var dt_col_amount_tx = IoC.GlobalContainer.Resolve<DataColumn>();
+                    dt_col_amount_tx.DataType = typeof(string);
+                    dt_col_amount_tx.ColumnName = "amount_rc";
+                    dt.Columns.Add(dt_col_amount_tx);
+                }
             }
             foreach (var tx in transactions)
             {
                 var count_sn = tx.Senders.Count;
-                var count_tx = tx.Receivers.Count;
+                var count_rc = tx.Receivers.Count;
 
-                if(count_sn > count_tx)
+                if (count_sn > count_rc)
                 {
-                    foreach(var )
+                    foreach (var rc in tx.Receivers)
+                    {
+                        foreach (var sn in tx.Senders)
+                        {
+                            var row = dt.NewRow();
+                            foreach (var prop in props)
+                            {
+                                if (prop.Name.Equals("Senders", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    row[prop.Name] = sn.Hash;
+                                    row["amount_sn"] = sn.Amount;
+                                    
+                                }
+                                else if (prop.Name.Equals("Recievers", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    row[prop.Name] = sn.Hash;
+                                    row["amount_rc"] = sn.Amount;
+                                }
+                            }
+
+                            dt.Rows.Add(row);
+                        }
+                    }
+
                 }
             }
 
