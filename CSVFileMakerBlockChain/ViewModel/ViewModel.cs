@@ -118,7 +118,7 @@ namespace CSVFileMakerBlockChain.View_Model
             foreach (var prop in props)
             {
                 var dt_col = IoC.GlobalContainer.Resolve<DataColumn>();
-                if (!prop.Equals(typeof(ISenderReciever)))
+                if (!prop.Name.Equals("Senders", StringComparison.CurrentCultureIgnoreCase) && !prop.Name.Equals("Receivers", StringComparison.CurrentCultureIgnoreCase))
                 {
                     dt_col.DataType = prop.PropertyType;
                 }
@@ -150,9 +150,9 @@ namespace CSVFileMakerBlockChain.View_Model
 
                 if (count_sn > count_rc)
                 {
-                    foreach (var rc in tx.Receivers)
+                    foreach (var sn in tx.Senders)
                     {
-                        foreach (var sn in tx.Senders)
+                        foreach (var rc in tx.Receivers)
                         {
                             var row = dt.NewRow();
                             foreach (var prop in props)
@@ -161,19 +161,17 @@ namespace CSVFileMakerBlockChain.View_Model
                                 {
                                     row[prop.Name] = sn.Hash;
                                     row["amount_sn"] = sn.Amount;
-                                    
                                 }
-                                else if (prop.Name.Equals("Recievers", StringComparison.CurrentCultureIgnoreCase))
+                                else if (prop.Name.Equals("Receivers", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    row[prop.Name] = sn.Hash;
-                                    row["amount_rc"] = sn.Amount;
+                                    row[prop.Name] = rc.Hash;
+                                    row["amount_rc"] = rc.Amount;
                                 }
                             }
-
+                            
                             dt.Rows.Add(row);
                         }
                     }
-
                 }
             }
 
