@@ -50,12 +50,12 @@ namespace CSVFileMakerBlockChain.Repository
             node = web.Load(url).DocumentNode;
             var div_block = node.Descendants("div").Where(fromClass("col-md-6 col-sm-6")).ToList();
 
-            var table = div_block[0].SelectNodes("//table");
+            var tables = div_block[0].SelectNodes("//table");
 
             var block = IoC.GlobalContainer.Resolve<IBlock>();
             block.Height = blockheight;
 
-            foreach (var rows in table[0].SelectNodes("tr"))
+            foreach (var rows in tables[0].SelectNodes("tr"))
             {
                 var cells = rows.SelectNodes("th|td");
 
@@ -185,8 +185,8 @@ namespace CSVFileMakerBlockChain.Repository
                 for (int i = 0; i < tds_sender_raw_hashes.Count; i++)
                 {
                     var tx_sender = IoC.GlobalContainer.Resolve<ISenderReciever>();
-                    tx_sender.Amount = tds_sender_raw_amounts[0].InnerText;
-                    tx_sender.Hash = tds_sender_raw_hashes[0].InnerText;
+                    tx_sender.Amount = tds_sender_raw_amounts[i].InnerText;
+                    tx_sender.Hash = tds_sender_raw_hashes[i].InnerText;
 
                     _parserFactory.AddSender(tx_obj, tx_sender);
                 }
@@ -194,8 +194,8 @@ namespace CSVFileMakerBlockChain.Repository
                 for (int i = 0; i < tds_reciever_raw_hashes.Count; i++)
                 {
                     var tx_reciever = IoC.GlobalContainer.Resolve<ISenderReciever>();
-                    tx_reciever.Amount = tds_reciever_raw_amounts[0].InnerText;
-                    tx_reciever.Hash = tds_reciever_raw_hashes[0].InnerText;
+                    tx_reciever.Amount = tds_reciever_raw_amounts[i].InnerText;
+                    tx_reciever.Hash = tds_reciever_raw_hashes[i].InnerText;
 
                     _parserFactory.AddReciever(tx_obj, tx_reciever);
                 }

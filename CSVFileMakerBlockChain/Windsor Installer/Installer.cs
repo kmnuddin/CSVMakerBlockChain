@@ -32,7 +32,7 @@ namespace CSVFileMakerBlockChain.WindsorInstaller
                 .Register(Component.For<IViewModel>().ImplementedBy<ViewModel>().LifestyleSingleton())
                 .Register(Component.For<HtmlNode>().LifestyleTransient())
                 .Register(Component.For<HtmlWeb>().LifestyleSingleton())
-                .Register(Component.For<DataSet>().LifestyleSingleton())
+                .Register(Component.For<DataSet>().LifestyleTransient())
                 .Register(Component.For<DataTable>().LifestyleTransient())
                 .Register(Component.For<DataColumn>().LifestyleTransient())
                 .Register(Component.For<DataRow>().LifestyleTransient());

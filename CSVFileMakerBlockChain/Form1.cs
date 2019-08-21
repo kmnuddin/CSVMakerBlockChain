@@ -67,8 +67,10 @@ namespace CSVFileMakerBlockChain
         {
             var listbox = sender as ListBox;
             var block_table = _viewModel.dataSet_block.Tables[listbox.SelectedIndex];
+            var tx_table = _viewModel.dataSet_tx.Tables[listbox.SelectedIndex];
 
             DataGridView_block.DataSource = block_table;
+            DataGridView_tx.DataSource = tx_table;
         }
     }
 }
