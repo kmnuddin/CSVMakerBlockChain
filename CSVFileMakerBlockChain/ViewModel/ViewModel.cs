@@ -35,6 +35,9 @@ namespace CSVFileMakerBlockChain.View_Model
                 {
                     nodes_block_heights = (List<IBlockHeight>)await _webRepository.ParseBlockHeightAsync(height);
 
+                    var latest_block_h_main = Regex.Match(nodes_block_heights.Last().Height, @"\d+").Value;
+                    var latest_block_h_orphan = Regex.Match(nodes_block_heights[nodes_block_heights.Count - 2].Height, @"\d+").Value;
+
                     node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
 
                     //transaction_ids = (List<string>) await _webRepository.ParseTransactionIDsAsync();
@@ -119,7 +122,7 @@ namespace CSVFileMakerBlockChain.View_Model
             foreach (var prop in props)
             {
                 var dt_col = IoC.GlobalContainer.Resolve<DataColumn>();
-                if (prop.Name.Equals("Senders", StringComparison.CurrentCultureIgnoreCase) || prop.Name.Equals("Receivers", StringComparison.CurrentCultureIgnoreCase) 
+                if (prop.Name.Equals("Senders", StringComparison.CurrentCultureIgnoreCase) || prop.Name.Equals("Receivers", StringComparison.CurrentCultureIgnoreCase)
                     || prop.Name.Equals("Block", StringComparison.CurrentCultureIgnoreCase))
                 {
                     dt_col.DataType = typeof(string);
@@ -167,7 +170,7 @@ namespace CSVFileMakerBlockChain.View_Model
                                 row[prop.Name] = rc.Hash;
                                 row["amount_rc"] = rc.Amount;
                             }
-                            else if(prop.Name.Equals("Block", StringComparison.CurrentCultureIgnoreCase))
+                            else if (prop.Name.Equals("Block", StringComparison.CurrentCultureIgnoreCase))
                             {
                                 row[prop.Name] = tx.Block.Height.Height;
                             }
