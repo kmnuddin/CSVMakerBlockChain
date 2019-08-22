@@ -170,8 +170,8 @@ namespace CSVFileMakerBlockChain.Repository
                         tx_sender.Amount = tds_reciever_raw_amounts[0].InnerText;
                         tx_sender.Hash = "";
 
-                        tx_reciever.Amount = tds_reciever_raw_amounts[0].InnerText;
-                        tx_reciever.Hash = tds_reciever_raw_hashes[0].InnerText;
+                        tx_reciever.Amount = tds_reciever_raw_amounts[i].InnerText;
+                        tx_reciever.Hash = tds_reciever_raw_hashes[i].InnerText;
 
                         _parserFactory.AddSender(tx_obj, tx_sender);
                         _parserFactory.AddReciever(tx_obj, tx_reciever);

@@ -21,7 +21,6 @@ namespace CSVFileMakerBlockChain.View_Model
         IWebRepository _webRepository;
         IList<string> transaction_ids;
 
-
         public ViewModel(IWebRepository webRepository)
         {
             _webRepository = webRepository;
@@ -31,12 +30,24 @@ namespace CSVFileMakerBlockChain.View_Model
         {
             try
             {
+                BindingList<IBlockHeight> binding_list = Init_local_repo();
                 for (int height = from; height <= to; height++)
                 {
                     nodes_block_heights = (List<IBlockHeight>)await _webRepository.ParseBlockHeightAsync(height);
 
-                    var latest_block_h_main = Regex.Match(nodes_block_heights.Last().Height, @"\d+").Value;
-                    var latest_block_h_orphan = Regex.Match(nodes_block_heights[nodes_block_heights.Count - 2].Height, @"\d+").Value;
+                    var latest_block_h_aux = Regex.Match(nodes_block_heights.Last().Height, @"\d+").Value;
+
+                    if (nodes_block_heights.Count > 1)
+                    {
+                        var block_heights_w_aux = nodes_block_heights.Where(a => a.Height.Contains(latest_block_h_aux));
+
+                        if (block_heights_w_aux.Count() >= 2)
+                        {
+                            await Populate_block_w_aux(listbox, binding_list, block_heights_w_aux);
+                            continue;
+                        }
+                    }
+
 
                     node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(nodes_block_heights.Last());
 
@@ -54,9 +65,7 @@ namespace CSVFileMakerBlockChain.View_Model
                     var dt_tx = await Task.Run(() => Construct_Datatable_for_tx(node_blocks.Last(), nodes_block_transactions));
                     dataSet_tx.Tables.Add(dt_tx);
 
-
-                    BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>(nodes_block_heights);
-
+                    binding_list.Add(nodes_block_heights.Last());
                     listbox.DataSource = binding_list;
                     listbox.DisplayMember = "Height";
                 }
@@ -68,6 +77,39 @@ namespace CSVFileMakerBlockChain.View_Model
             }
         }
 
+        private async Task Populate_block_w_aux(ListBox listbox, BindingList<IBlockHeight> binding_list, IEnumerable<IBlockHeight> block_heights_w_aux)
+        {
+            foreach (var block_height_w_aux in block_heights_w_aux)
+            {
+                node_blocks = (List<IBlock>)await _webRepository.ParseBlocksAsync(block_height_w_aux);
+                nodes_block_transactions = (List<ITransaction>)await _webRepository.ParseTransactions_OPT_Async(node_blocks.Last());
+                var dt_block_aux = await Task.Run(() => Construct_Datatable_for_block(node_blocks.Last()));
+                dataSet_block.Tables.Add(dt_block_aux);
+
+                var dt_tx_aux = await Task.Run(() => Construct_Datatable_for_tx(node_blocks.Last(), nodes_block_transactions));
+                dataSet_tx.Tables.Add(dt_tx_aux);
+
+
+                binding_list.Add(block_height_w_aux);
+
+                listbox.DataSource = binding_list;
+                listbox.DisplayMember = "Height";
+            }
+        }
+
+        private BindingList<IBlockHeight> Init_local_repo()
+        {
+            BindingList<IBlockHeight> binding_list = new BindingList<IBlockHeight>();
+            //if (node_blocks.Count > 0)
+            //{
+            //    node_blocks.Clear();
+            //    nodes_block_heights.Clear();
+            //    nodes_block_transactions.Clear(); 
+            //}
+            return binding_list;
+        }
+
+       
         public DataTable Construct_Datatable_for_block(IBlock block)
         {
             var dt = new DataTable();
